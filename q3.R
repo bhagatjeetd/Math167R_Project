@@ -56,9 +56,21 @@ ggplot(gender_long, aes(x = year, y = pct, fill = gender)) +
     fill = "Gender"
   )
 # your code that creates p1 and p2 to view
-p1 <- ggplot(top_countries, aes(reorder(country, n), n)) + geom_col() + coord_flip() + facet_wrap(~year, scales="free_y")
-p2 <- ggplot(gender_long, aes(year, pct, fill = gender)) + geom_col() +
-  geom_text(aes(label = paste0(round(pct), "%")), position = position_stack(vjust = 0.5), size = 3)
+p1 <- ggplot(top_countries, aes(x = reorder(country, n), y = n, fill = country)) +
+  geom_col(color = "white") +
+  coord_flip() +
+  facet_wrap(~ year, scales = "free_y") +
+  scale_fill_brewer(palette = "Set3") +     # try "Paired", "Set2", etc.
+  guides(fill = "none") +                   # hide giant legend
+  labs(title = "Top 10 Respondent Countries: 2020 vs 2021",
+       x = "Country", y = "Number of respondents")
+p2 <- ggplot(gender_long, aes(x = year, y = pct, fill = gender)) +
+  geom_col(color = "white") +
+  geom_text(aes(label = paste0(round(pct), "%")),
+            position = position_stack(vjust = 0.5), size = 3) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Gender Distribution of Respondents by Year",
+       x = NULL, y = "Percent of respondents", fill = "Gender")
 
 print(p1)
 print(p2)
